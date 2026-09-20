@@ -1,0 +1,3140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SchemeWise - Discover Indian government health schemes, check rough eligibility, and find nearby health camps." />
+  <title>SchemeWise — Health Scheme Guidance</title>
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #087f8c;
+      --primary-dark: #05616b;
+      --primary-light: #e7f7f8;
+      --blue: #1769aa;
+      --blue-light: #eaf4fc;
+      --text: #16323a;
+      --muted: #60767d;
+      --border: #dbe7ea;
+      --background: #f7fafb;
+      --white: #ffffff;
+      --success: #237a57;
+      --success-bg: #eaf7f0;
+      --warning: #9a6700;
+      --warning-bg: #fff6dc;
+      --danger: #a33a3a;
+      --danger-bg: #fff0f0;
+      --radius: 16px;
+      --container: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin: 0 auto;
+    }
+
+    /* ---------------- HEADER ---------------- */
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.97);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      gap: 26px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.35rem;
+      color: var(--primary-dark);
+      margin-right: auto;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .nav-link {
+      padding: 9px 11px;
+      border-radius: 9px;
+      color: #405960;
+      font-size: .93rem;
+      font-weight: 600;
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .outline-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 17px;
+      font-weight: 700;
+      transition: .2s ease;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .secondary-btn {
+      background: var(--blue-light);
+      color: var(--blue);
+    }
+
+    .secondary-btn:hover {
+      background: #dcecf8;
+    }
+
+    .outline-btn {
+      background: white;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .outline-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .hamburger {
+      display: none;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      width: 42px;
+      height: 42px;
+    }
+
+    /* ---------------- GENERAL ---------------- */
+
+    .page {
+      min-height: calc(100vh - 72px);
+    }
+
+    .section {
+      padding: 72px 0;
+    }
+
+    .section-sm {
+      padding: 45px 0;
+    }
+
+    .section-title {
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -.02em;
+    }
+
+    .section-subtitle {
+      margin: 0;
+      color: var(--muted);
+      max-width: 700px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .card-pad {
+      padding: 24px;
+    }
+
+    .icon-box {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      background: var(--primary-light);
+      flex: 0 0 auto;
+    }
+
+    .icon-box.blue {
+      color: var(--blue);
+      background: var(--blue-light);
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      background: #f0f5f6;
+      color: #526970;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: .76rem;
+      font-weight: 700;
+      margin: 3px 4px 3px 0;
+    }
+
+    .tag.primary {
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    .disclaimer {
+      background: #fff8e7;
+      border: 1px solid #f0dfae;
+      border-radius: 13px;
+      padding: 15px 17px;
+      color: #665329;
+      font-size: .88rem;
+    }
+
+    .disclaimer strong {
+      color: #4e3d19;
+    }
+
+    /* ---------------- HOME ---------------- */
+
+    .hero {
+      padding: 78px 0 70px;
+      background:
+        radial-gradient(circle at 90% 10%, #dff5f5 0, transparent 30%),
+        linear-gradient(180deg, #ffffff 0%, #f3fbfb 100%);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.45rem, 5vw, 4.25rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+      margin: 0 0 22px;
+      max-width: 800px;
+    }
+
+    .hero h1 span {
+      color: var(--primary);
+    }
+
+    .hero-text {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+    }
+
+    .hero-panel {
+      padding: 28px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 22px;
+    }
+
+    .hero-panel-head {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 22px;
+    }
+
+    .hero-panel h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 13px;
+    }
+
+    .mini-list-item {
+      display: flex;
+      gap: 11px;
+      align-items: flex-start;
+      color: #50656c;
+      font-size: .92rem;
+    }
+
+    .mini-check {
+      color: var(--success);
+      margin-top: 3px;
+      flex: 0 0 auto;
+    }
+
+    .steps-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 32px;
+    }
+
+    .step-card {
+      padding: 24px;
+      position: relative;
+    }
+
+    .step-number {
+      font-size: .78rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .step-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+
+    .step-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(4, 1fr);
+      margin-top: 32px;
+    }
+
+    .feature-card {
+      padding: 25px;
+      transition: transform .2s ease, border-color .2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-3px);
+      border-color: #a9d9dc;
+    }
+
+    .feature-card h3 {
+      margin: 17px 0 7px;
+      font-size: 1.05rem;
+    }
+
+    .feature-card p {
+      color: var(--muted);
+      font-size: .9rem;
+      margin: 0 0 15px;
+    }
+
+    .text-link {
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: .88rem;
+    }
+
+    .closing-cta {
+      background: var(--primary-dark);
+      color: white;
+      border-radius: 22px;
+      padding: 42px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .closing-cta h2 {
+      margin: 0 0 8px;
+    }
+
+    .closing-cta p {
+      margin: 0;
+      color: #cce8e9;
+      max-width: 700px;
+    }
+
+    .privacy-note {
+      font-size: .82rem;
+      margin-top: 13px !important;
+      color: #a9d7d9 !important;
+    }
+
+    /* ---------------- PAGE HEADER ---------------- */
+
+    .page-header {
+      padding: 52px 0 36px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .page-header-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 30px;
+      align-items: end;
+    }
+
+    /* ---------------- FORMS ---------------- */
+
+    .checker-shell {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e7eeee;
+      border-radius: 99px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      transition: width .25s ease;
+    }
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: .82rem;
+      margin-bottom: 8px;
+    }
+
+    .form-card {
+      padding: 32px;
+    }
+
+    .form-card h2 {
+      margin: 0 0 8px;
+    }
+
+    .form-card > p {
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-weight: 750;
+      font-size: .9rem;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid #cddde0;
+      border-radius: 10px;
+      padding: 12px 13px;
+      background: white;
+      color: var(--text);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(8,127,140,.1);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 10px;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 25px;
+    }
+
+    .choice {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: .2s ease;
+      background: white;
+    }
+
+    .choice:hover,
+    .choice.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .choice strong {
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .choice span {
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    /* ---------------- SCHEME CARDS ---------------- */
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 12px;
+      margin: 28px 0;
+    }
+
+    .scheme-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .scheme-card {
+      padding: 23px;
+      display: flex;
+      flex-direction: column;
+      min-height: 290px;
+    }
+
+    .scheme-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .scheme-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.35;
+    }
+
+    .scheme-summary {
+      color: var(--muted);
+      font-size: .88rem;
+      margin: 13px 0;
+    }
+
+    .scheme-card-footer {
+      margin-top: auto;
+      padding-top: 15px;
+      border-top: 1px solid #edf2f3;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scheme-meta {
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .results-count {
+      color: var(--muted);
+      font-size: .88rem;
+      margin-bottom: 15px;
+    }
+
+    /* ---------------- DETAILS ---------------- */
+
+    .back-link {
+      display: inline-flex;
+      gap: 7px;
+      align-items: center;
+      color: var(--primary-dark);
+      font-weight: 750;
+      margin-bottom: 20px;
+      font-size: .9rem;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.5fr .7fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .detail-main,
+    .detail-side {
+      padding: 30px;
+    }
+
+    .detail-main h1 {
+      margin: 12px 0;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.15;
+    }
+
+    .detail-main h2,
+    .detail-side h2 {
+      font-size: 1.2rem;
+      margin: 30px 0 10px;
+    }
+
+    .detail-main h2:first-child {
+      margin-top: 0;
+    }
+
+    .detail-main p {
+      color: #50656c;
+    }
+
+    .detail-list {
+      padding-left: 21px;
+      color: #50656c;
+    }
+
+    .detail-list li {
+      margin-bottom: 7px;
+    }
+
+    .side-block {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+    }
+
+    .side-block:last-child {
+      border-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    .side-label {
+      color: var(--muted);
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      font-weight: 800;
+    }
+
+    .side-value {
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* ---------------- CAMPS ---------------- */
+
+    .camp-filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 700px;
+      margin: 25px 0;
+    }
+
+    .camp-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .camp-card {
+      padding: 23px;
+    }
+
+    .camp-card-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: .73rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status.upcoming {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .status.completed {
+      background: #f0f2f3;
+      color: #66767a;
+    }
+
+    .camp-card h3 {
+      margin: 15px 0 4px;
+      font-size: 1.05rem;
+    }
+
+    .camp-organizer {
+      color: var(--muted);
+      font-size: .82rem;
+      margin-bottom: 15px;
+    }
+
+    .camp-info {
+      display: grid;
+      gap: 8px;
+      color: #52676d;
+      font-size: .87rem;
+    }
+
+    .camp-info-row {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+    }
+
+    /* ---------------- FIND HELP ---------------- */
+
+    .help-options {
+      grid-template-columns: repeat(3, 1fr);
+      margin: 30px 0;
+    }
+
+    .help-option {
+      padding: 25px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .help-option:hover,
+    .help-option.selected {
+      border-color: var(--primary);
+      background: #fbffff;
+    }
+
+    .help-option h3 {
+      margin: 15px 0 7px;
+    }
+
+    .help-option p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .help-guidance {
+      background: var(--primary-light);
+      border: 1px solid #c8e9eb;
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .help-guidance strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--primary-dark);
+    }
+
+    /* ---------------- ABOUT ---------------- */
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 22px;
+    }
+
+    .about-card {
+      padding: 30px;
+    }
+
+    .about-card h2 {
+      margin-top: 0;
+    }
+
+    .developer-box {
+      background: #f3f8f9;
+      border: 1px dashed #b9d1d5;
+      border-radius: 14px;
+      padding: 20px;
+    }
+
+    /* ---------------- EMPTY ---------------- */
+
+    .empty {
+      text-align: center;
+      padding: 55px 25px;
+      border: 1px dashed #cbdadc;
+      border-radius: 16px;
+      background: white;
+    }
+
+    .empty h3 {
+      margin: 12px 0 6px;
+    }
+
+    .empty p {
+      color: var(--muted);
+      max-width: 550px;
+      margin: 0 auto 20px;
+    }
+
+    /* ---------------- FOOTER ---------------- */
+
+    footer {
+      margin-top: 60px;
+      background: #113c43;
+      color: #d9ebed;
+    }
+
+    .footer-main {
+      padding: 45px 0 30px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 45px;
+    }
+
+    .footer-brand {
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .footer-main p {
+      color: #a9c6ca;
+      font-size: .86rem;
+    }
+
+    .footer-title {
+      color: white;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 7px;
+      font-size: .86rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #315b61;
+      padding: 18px 0;
+      color: #9ebbc0;
+      font-size: .78rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    /* ---------------- RESPONSIVE ---------------- */
+
+    @media (max-width: 1000px) {
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-link {
+        padding: 8px;
+      }
+
+      .steps-grid,
+      .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .scheme-grid,
+      .camp-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .filters {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .detail-grid,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .container {
+        width: min(calc(100% - 24px), var(--container));
+      }
+
+      .nav {
+        min-height: 64px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: 68px;
+        padding: 10px;
+        background: white;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-link {
+        padding: 11px;
+      }
+
+      .nav .primary-btn {
+        display: none;
+      }
+
+      .hamburger {
+        display: grid;
+        place-items: center;
+      }
+
+      .hero {
+        padding: 55px 0;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .hero h1 {
+        font-size: 2.65rem;
+      }
+
+      .steps-grid,
+      .feature-grid,
+      .scheme-grid,
+      .camp-grid,
+      .help-options,
+      .form-grid,
+      .choice-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filters,
+      .camp-filters {
+        grid-template-columns: 1fr;
+      }
+
+      .page-header-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .form-card,
+      .detail-main,
+      .detail-side,
+      .about-card {
+        padding: 22px;
+      }
+
+      .closing-cta {
+        padding: 28px;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer-main {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState, useEffect, useMemo } = React;
+
+    /* ============================================================
+       SAMPLE SCHEME DATA
+       ============================================================ */
+
+    const schemes = [
+      {
+        id: "pmjay",
+        name: "Ayushman Bharat PM-JAY",
+        summary: "Government-funded health protection scheme providing cashless hospitalization coverage to eligible families.",
+        description:
+          "Ayushman Bharat - Pradhan Mantri Jan Arogya Yojana (PM-JAY) provides health coverage for eligible beneficiary families for secondary and tertiary hospitalization through empanelled hospitals.",
+        state: "All India",
+        benefitType: "Health Insurance",
+        targetGroup: ["Low-income families", "Vulnerable households", "Eligible families"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 120,
+          incomeCeiling: 300000,
+          occupations: ["farmer", "unorganized worker", "unemployed", "other", "student", "salaried", "self-employed", "senior citizen"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Cashless treatment at empanelled hospitals",
+          "Coverage for eligible secondary and tertiary hospitalization",
+          "Family-based eligibility under the scheme database"
+        ],
+        documentsRequired: [
+          "Government-issued identity document",
+          "Ration card or family identification document where applicable",
+          "Beneficiary identification details"
+        ],
+        howToApply: [
+          "Check your eligibility through the official PM-JAY beneficiary portal.",
+          "Visit an Ayushman Arogya Mandir, Common Service Centre or empanelled facility where available.",
+          "Complete beneficiary verification as required by the authority.",
+          "Use the issued beneficiary identification for eligible treatment."
+        ],
+        officialUrl: "https://pmjay.gov.in/"
+      },
+      {
+        id: "pmsby",
+        name: "Pradhan Mantri Suraksha Bima Yojana (PMSBY)",
+        summary: "Accident insurance scheme offering coverage for accidental death and disability to eligible bank account holders.",
+        description:
+          "PMSBY is an accident insurance scheme available through participating banks and post offices for eligible account holders in the prescribed age group.",
+        state: "All India",
+        benefitType: "Insurance",
+        targetGroup: ["Bank account holders", "Working adults"],
+        eligibility: {
+          minAge: 18,
+          maxAge: 70,
+          incomeCeiling: Infinity,
+          occupations: ["student", "farmer", "unorganized worker", "salaried", "self-employed", "unemployed", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Accidental death cover",
+          "Coverage for specified permanent disabilities",
+          "Low-cost annual accident insurance"
+        ],
+        documentsRequired: [
+          "Participating bank or post office account",
+          "Identity/KYC details as required by the participating institution"
+        ],
+        howToApply: [
+          "Approach a participating bank or post office.",
+          "Request enrolment in PMSBY.",
+          "Provide the required KYC information.",
+          "Authorize the prescribed premium debit from the eligible account."
+        ],
+        officialUrl: "https://financialservices.gov.in/beta/en/pmsby"
+      },
+      {
+        id: "jsy",
+        name: "Janani Suraksha Yojana (JSY)",
+        summary: "Safe motherhood intervention supporting institutional delivery among eligible pregnant women.",
+        description:
+          "Janani Suraksha Yojana is a centrally sponsored scheme that promotes institutional delivery among pregnant women, with implementation details varying according to state classification and eligibility.",
+        state: "All India",
+        benefitType: "Maternal Health",
+        targetGroup: ["Pregnant women", "Women from eligible households"],
+        eligibility: {
+          minAge: 18,
+          maxAge: 49,
+          incomeCeiling: 300000,
+          occupations: ["farmer", "unorganized worker", "unemployed", "other", "self-employed"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Cash assistance for eligible institutional deliveries",
+          "Support linked to maternal and newborn health services",
+          "Facilitation through public health facilities"
+        ],
+        documentsRequired: [
+          "Identity document",
+          "Pregnancy/maternal health records as applicable",
+          "Bank account details where payment is applicable"
+        ],
+        howToApply: [
+          "Contact an accredited public health facility or ASHA worker.",
+          "Complete the required registration.",
+          "Follow the state-specific JSY process.",
+          "Use the designated health facility for eligible services."
+        ],
+        officialUrl: "https://nhm.gov.in/"
+      },
+      {
+        id: "pmmvy",
+        name: "Pradhan Mantri Matru Vandana Yojana (PMMVY)",
+        summary: "Maternity benefit programme providing financial support to eligible pregnant and lactating women.",
+        description:
+          "PMMVY provides maternity benefit support to eligible women according to the scheme's current guidelines and conditions.",
+        state: "All India",
+        benefitType: "Maternal Health",
+        targetGroup: ["Pregnant women", "Lactating women"],
+        eligibility: {
+          minAge: 19,
+          maxAge: 55,
+          incomeCeiling: 300000,
+          occupations: ["farmer", "unorganized worker", "unemployed", "other", "self-employed"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Maternity benefit support subject to scheme conditions",
+          "Support connected with maternal and child health practices",
+          "Digital application support through designated systems"
+        ],
+        documentsRequired: [
+          "Identity document",
+          "Pregnancy-related documentation",
+          "Bank account details where required"
+        ],
+        howToApply: [
+          "Contact the nearest Anganwadi Centre or designated implementing office.",
+          "Check the current eligibility conditions.",
+          "Submit the required documents through the prescribed process.",
+          "Track the benefit status through the authorized system."
+        ],
+        officialUrl: "https://wcd.gov.in/"
+      },
+      {
+        id: "rbsk",
+        name: "Rashtriya Bal Swasthya Karyakram (RBSK)",
+        summary: "Child health screening and early intervention programme for children from birth to 18 years.",
+        description:
+          "RBSK provides screening for selected health conditions in children and adolescents and supports early intervention and referral services.",
+        state: "All India",
+        benefitType: "Screening",
+        targetGroup: ["Children", "Adolescents"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 18,
+          incomeCeiling: Infinity,
+          occupations: ["student", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Child health screening",
+          "Early identification of selected health conditions",
+          "Referral and follow-up support where indicated"
+        ],
+        documentsRequired: [
+          "Child identification or school/Anganwadi records where applicable",
+          "Parent or guardian details"
+        ],
+        howToApply: [
+          "Contact the child's school, Anganwadi Centre or local health authority.",
+          "Participate in scheduled screening activities.",
+          "Follow referral instructions if a condition is identified."
+        ],
+        officialUrl: "https://nhm.gov.in/"
+      },
+      {
+        id: "nphce",
+        name: "National Programme for Health Care of the Elderly (NPHCE)",
+        summary: "Programme supporting accessible healthcare services for senior citizens through public health facilities.",
+        description:
+          "NPHCE focuses on providing preventive, curative and rehabilitative healthcare services for older persons through designated public health facilities.",
+        state: "All India",
+        benefitType: "Senior Citizen Health",
+        targetGroup: ["Senior citizens"],
+        eligibility: {
+          minAge: 60,
+          maxAge: 120,
+          incomeCeiling: Infinity,
+          occupations: ["senior citizen", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Geriatric healthcare services",
+          "Screening and treatment through designated public facilities",
+          "Referral and rehabilitative support where available"
+        ],
+        documentsRequired: [
+          "Age/identity proof",
+          "Existing medical records if available and relevant"
+        ],
+        howToApply: [
+          "Visit a designated government health facility.",
+          "Ask for services available under NPHCE.",
+          "Complete registration according to the facility process."
+        ],
+        officialUrl: "https://nhm.gov.in/"
+      },
+      {
+        id: "jssk",
+        name: "Janani Shishu Suraksha Karyakram (JSSK)",
+        summary: "Entitlements for pregnant women and sick newborns/infants using public health facilities.",
+        description:
+          "JSSK aims to reduce out-of-pocket expenditure for pregnant women and sick newborns accessing public health facilities, subject to programme provisions.",
+        state: "All India",
+        benefitType: "Maternal & Child Health",
+        targetGroup: ["Pregnant women", "Newborns", "Infants"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 55,
+          incomeCeiling: Infinity,
+          occupations: ["farmer", "unorganized worker", "unemployed", "other", "student"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Free or no-cost services as covered by programme entitlements",
+          "Support for eligible diagnostics and medicines",
+          "Transport-related entitlements under applicable provisions"
+        ],
+        documentsRequired: [
+          "Identity document where required",
+          "Maternal/child health records"
+        ],
+        howToApply: [
+          "Visit a government health facility.",
+          "Ask the facility about JSSK entitlements.",
+          "Use the designated public health service pathway."
+        ],
+        officialUrl: "https://nhm.gov.in/"
+      },
+      {
+        id: "sickle",
+        name: "National Sickle Cell Anaemia Elimination Mission",
+        summary: "Screening and support initiative focused on sickle cell disease, particularly in high-burden regions.",
+        description:
+          "The National Sickle Cell Anaemia Elimination Mission focuses on screening, awareness, counselling and linkage to care for sickle cell disease.",
+        state: "All India",
+        benefitType: "Screening",
+        targetGroup: ["Children", "Young adults", "At-risk communities"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 40,
+          incomeCeiling: Infinity,
+          occupations: ["student", "farmer", "unorganized worker", "unemployed", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Screening for sickle cell disease",
+          "Counselling and awareness",
+          "Linkage to appropriate healthcare services"
+        ],
+        documentsRequired: [
+          "Identity document where required",
+          "Screening registration details"
+        ],
+        howToApply: [
+          "Check with a participating government health facility or screening camp.",
+          "Complete screening as advised by health personnel.",
+          "Follow referral and counselling instructions."
+        ],
+        officialUrl: "https://sickle.nhm.gov.in/"
+      },
+      {
+        id: "nhm",
+        name: "National Health Mission (NHM)",
+        summary: "Umbrella public health programme supporting a broad range of maternal, child and community health services.",
+        description:
+          "The National Health Mission supports health system strengthening and a range of public health programmes delivered through states and Union Territories.",
+        state: "All India",
+        benefitType: "Public Health Services",
+        targetGroup: ["General public", "Women", "Children", "Vulnerable groups"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 120,
+          incomeCeiling: Infinity,
+          occupations: ["student", "farmer", "unorganized worker", "salaried", "self-employed", "unemployed", "senior citizen", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Access to various public health programmes",
+          "Maternal and child health services",
+          "Community-level preventive and primary healthcare services"
+        ],
+        documentsRequired: [
+          "Identity or health facility registration documents as applicable"
+        ],
+        howToApply: [
+          "Visit your nearest government health facility.",
+          "Ask about programmes available under NHM.",
+          "Follow the facility-specific registration process."
+        ],
+        officialUrl: "https://nhm.gov.in/"
+      },
+      {
+        id: "healthwellness",
+        name: "Ayushman Arogya Mandir",
+        summary: "Comprehensive primary healthcare platform delivering preventive, promotive and basic curative health services.",
+        description:
+          "Ayushman Arogya Mandirs provide a range of expanded primary healthcare services closer to communities through the public health system.",
+        state: "All India",
+        benefitType: "Primary Healthcare",
+        targetGroup: ["General public", "Families", "Rural communities"],
+        eligibility: {
+          minAge: 0,
+          maxAge: 120,
+          incomeCeiling: Infinity,
+          occupations: ["student", "farmer", "unorganized worker", "salaried", "self-employed", "unemployed", "senior citizen", "other"],
+          states: ["ALL"]
+        },
+        benefits: [
+          "Preventive healthcare",
+          "Screening and wellness services",
+          "Basic primary healthcare and referral support"
+        ],
+        documentsRequired: [
+          "Identity document where required by the facility"
+        ],
+        howToApply: [
+          "Locate an Ayushman Arogya Mandir.",
+          "Visit during operating hours.",
+          "Register with the health facility if required."
+        ],
+        officialUrl: "https://ab-hwc.nhp.gov.in/"
+      }
+    ];
+
+    /* ============================================================
+       SAMPLE HEALTH CAMP DATA
+       ============================================================ */
+
+    const camps = [
+      {
+        id: "camp-01",
+        name: "Free General Health Screening Camp",
+        organizer: "Tamil Nadu Health Department",
+        date: "2026-09-25",
+        district: "Chennai",
+        venue: "Government Higher Secondary School, Perambur",
+        serviceType: "Screening"
+      },
+      {
+        id: "camp-02",
+        name: "NCD Screening Camp",
+        organizer: "National Health Mission",
+        date: "2026-09-28",
+        district: "Chengalpattu",
+        venue: "Government Primary Health Centre, Tambaram",
+        serviceType: "Screening"
+      },
+      {
+        id: "camp-03",
+        name: "Maternal & Child Health Camp",
+        organizer: "Tamil Nadu Health Department",
+        date: "2026-10-02",
+        district: "Kancheepuram",
+        venue: "Urban Health Centre, Kancheepuram",
+        serviceType: "Maternal & Child Health"
+      },
+      {
+        id: "camp-04",
+        name: "Eye Screening Camp",
+        organizer: "District Health Society",
+        date: "2026-10-06",
+        district: "Tiruvallur",
+        venue: "Government Hospital Campus, Tiruvallur",
+        serviceType: "Eye Care"
+      },
+      {
+        id: "camp-05",
+        name: "Senior Citizen Wellness Camp",
+        organizer: "National Programme for Health Care of the Elderly",
+        date: "2026-10-10",
+        district: "Chennai",
+        venue: "Government Hospital, Royapuram",
+        serviceType: "Senior Citizen Health"
+      },
+      {
+        id: "camp-06",
+        name: "Sickle Cell Screening Camp",
+        organizer: "National Health Mission",
+        date: "2026-10-15",
+        district: "Madurai",
+        venue: "District Government Hospital, Madurai",
+        serviceType: "Screening"
+      },
+      {
+        id: "camp-07",
+        name: "Child Health Screening Camp",
+        organizer: "Rashtriya Bal Swasthya Karyakram",
+        date: "2026-10-20",
+        district: "Coimbatore",
+        venue: "Government Middle School, Coimbatore",
+        serviceType: "Child Health"
+      },
+      {
+        id: "camp-08",
+        name: "Women's Wellness Camp",
+        organizer: "District Health Society",
+        date: "2026-08-20",
+        district: "Chennai",
+        venue: "Community Health Centre, Anna Nagar",
+        serviceType: "Women's Health"
+      },
+      {
+        id: "camp-09",
+        name: "Diabetes & Hypertension Screening",
+        organizer: "National Health Mission",
+        date: "2026-08-30",
+        district: "Salem",
+        venue: "Government Hospital, Salem",
+        serviceType: "Screening"
+      },
+      {
+        id: "camp-10",
+        name: "General Medical Camp",
+        organizer: "District Health Society",
+        date: "2026-09-12",
+        district: "Vellore",
+        venue: "Government Primary Health Centre, Vellore",
+        serviceType: "General Health"
+      }
+    ];
+
+    const states = [
+      "Andhra Pradesh",
+      "Arunachal Pradesh",
+      "Assam",
+      "Bihar",
+      "Chhattisgarh",
+      "Goa",
+      "Gujarat",
+      "Haryana",
+      "Himachal Pradesh",
+      "Jharkhand",
+      "Karnataka",
+      "Kerala",
+      "Madhya Pradesh",
+      "Maharashtra",
+      "Manipur",
+      "Meghalaya",
+      "Mizoram",
+      "Nagaland",
+      "Odisha",
+      "Punjab",
+      "Rajasthan",
+      "Sikkim",
+      "Tamil Nadu",
+      "Telangana",
+      "Tripura",
+      "Uttar Pradesh",
+      "Uttarakhand",
+      "West Bengal",
+      "Andaman and Nicobar Islands",
+      "Chandigarh",
+      "Dadra and Nagar Haveli and Daman and Diu",
+      "Delhi",
+      "Jammu and Kashmir",
+      "Ladakh",
+      "Lakshadweep",
+      "Puducherry"
+    ];
+
+    const incomeOptions = [
+      { label: "Below ₹1 lakh", value: 100000 },
+      { label: "₹1–3 lakh", value: 300000 },
+      { label: "₹3–5 lakh", value: 500000 },
+      { label: "₹5–8 lakh", value: 800000 },
+      { label: "Above ₹8 lakh", value: 10000000 }
+    ];
+
+    const occupations = [
+      "student",
+      "farmer",
+      "unorganized worker",
+      "salaried",
+      "self-employed",
+      "unemployed",
+      "senior citizen",
+      "other"
+    ];
+
+    const benefitTypes = [...new Set(schemes.map(s => s.benefitType))];
+    const targetGroups = [...new Set(schemes.flatMap(s => s.targetGroup))];
+
+    /* ============================================================
+       ICONS
+       ============================================================ */
+
+    function Icon({ name, size = 22 }) {
+      const common = {
+        width: size,
+        height: size,
+        viewBox: "0 0 24 24",
+        fill: "none",
+        stroke: "currentColor",
+        strokeWidth: "1.8",
+        strokeLinecap: "round",
+        strokeLinejoin: "round"
+      };
+
+      const icons = {
+        shield: (
+          <svg {...common}>
+            <path d="M12 3l7 3v5c0 4.5-2.7 8.2-7 10-4.3-1.8-7-5.5-7-10V6l7-3z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        ),
+        search: (
+          <svg {...common}>
+            <circle cx="11" cy="11" r="7"/>
+            <path d="M20 20l-4-4"/>
+          </svg>
+        ),
+        check: (
+          <svg {...common}>
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+        ),
+        arrow: (
+          <svg {...common}>
+            <path d="M5 12h14"/>
+            <path d="M13 6l6 6-6 6"/>
+          </svg>
+        ),
+        menu: (
+          <svg {...common}>
+            <path d="M4 7h16M4 12h16M4 17h16"/>
+          </svg>
+        ),
+        close: (
+          <svg {...common}>
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        ),
+        heart: (
+          <svg {...common}>
+            <path d="M20.8 8.6c0 5.5-8.8 10.4-8.8 10.4S3.2 14.1 3.2 8.6A4.6 4.6 0 0 1 12 6.3a4.6 4.6 0 0 1 8.8 2.3z"/>
+          </svg>
+        ),
+        calendar: (
+          <svg {...common}>
+            <rect x="3" y="4.5" width="18" height="16" rx="2"/>
+            <path d="M8 2.5v4M16 2.5v4M3 9h18"/>
+          </svg>
+        ),
+        location: (
+          <svg {...common}>
+            <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0z"/>
+            <circle cx="12" cy="10" r="2.5"/>
+          </svg>
+        ),
+        user: (
+          <svg {...common}>
+            <circle cx="12" cy="8" r="3.5"/>
+            <path d="M5 21a7 7 0 0 1 14 0"/>
+          </svg>
+        ),
+        document: (
+          <svg {...common}>
+            <path d="M6 3h9l4 4v14H6z"/>
+            <path d="M14 3v5h5M9 13h6M9 17h6"/>
+          </svg>
+        ),
+        external: (
+          <svg {...common}>
+            <path d="M14 5h5v5"/>
+            <path d="M10 14L19 5"/>
+            <path d="M19 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/>
+          </svg>
+        ),
+        money: (
+          <svg {...common}>
+            <rect x="3" y="6" width="18" height="12" rx="2"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M7 9h.01M17 15h.01"/>
+          </svg>
+        ),
+        insurance: (
+          <svg {...common}>
+            <path d="M12 3l8 4v5c0 4.6-3.1 7.9-8 9-4.9-1.1-8-4.4-8-9V7l8-4z"/>
+            <path d="M12 8v8M8 12h8"/>
+          </svg>
+        ),
+        scan: (
+          <svg {...common}>
+            <path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        ),
+        info: (
+          <svg {...common}>
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 10v6M12 7h.01"/>
+          </svg>
+        )
+      };
+
+      return icons[name] || icons.info;
+    }
+
+    /* ============================================================
+       ROUTER
+       ============================================================ */
+
+    function getRoute() {
+      const hash = window.location.hash || "#/";
+      const path = hash.replace(/^#/, "") || "/";
+
+      if (path.startsWith("/schemes/")) {
+        return {
+          page: "scheme-detail",
+          id: decodeURIComponent(path.split("/")[2])
+        };
+      }
+
+      const valid = [
+        "/",
+        "/eligibility",
+        "/schemes",
+        "/camps",
+        "/find-help",
+        "/about"
+      ];
+
+      return {
+        page: valid.includes(path) ? path.slice(1) || "home" : "home"
+      };
+    }
+
+    function navigate(path) {
+      window.location.hash = path;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+
+    function Header() {
+      const [open, setOpen] = useState(false);
+      const route = getRoute();
+
+      const links = [
+        ["/", "Home"],
+        ["/eligibility", "Check Eligibility"],
+        ["/schemes", "Health Schemes"],
+        ["/camps", "Health Camps"],
+        ["/find-help", "Find Help"],
+        ["/about", "About"]
+      ];
+
+      return (
+        <header className="header">
+          <div className="container nav">
+            <a className="brand" href="#/" onClick={() => setOpen(false)}>
+              <span className="brand-mark">
+                <Icon name="shield" size={23}/>
+              </span>
+              SchemeWise
+            </a>
+
+            <nav className={"nav-links " + (open ? "open" : "")}>
+              {links.map(([path, label]) => {
+                const active =
+                  path === "/"
+                    ? route.page === "home"
+                    : window.location.hash.startsWith("#" + path);
+
+                return (
+                  <a
+                    key={path}
+                    href={"#" + path}
+                    className={"nav-link " + (active ? "active" : "")}
+                    onClick={() => setOpen(false)}
+                  >
+                    {label}
+                  </a>
+                );
+              })}
+            </nav>
+
+            <a className="primary-btn" href="#/eligibility">
+              Check My Eligibility
+            </a>
+
+            <button
+              className="hamburger"
+              aria-label="Toggle menu"
+              onClick={() => setOpen(!open)}
+            >
+              <Icon name={open ? "close" : "menu"} size={21}/>
+            </button>
+          </div>
+        </header>
+      );
+    }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+
+    function Disclaimer() {
+      return (
+        <div className="disclaimer">
+          <strong>Important:</strong> SchemeWise provides information and eligibility
+          guidance only. Final eligibility and approval are determined by the respective
+          scheme authority. Always verify details on official government websites before applying.
+        </div>
+      );
+    }
+
+    function Footer() {
+      return (
+        <footer>
+          <div className="container footer-main">
+            <div>
+              <div className="footer-brand">SchemeWise</div>
+              <p>
+                A civic-tech information tool helping people discover public
+                healthcare schemes and services in India.
+              </p>
+              <p>
+                Information is provided for guidance and should be verified with
+                the respective government authority.
+              </p>
+            </div>
+
+            <div>
+              <div className="footer-title">Explore</div>
+              <div className="footer-links">
+                <a href="#/">Home</a>
+                <a href="#/eligibility">Check Eligibility</a>
+                <a href="#/schemes">Health Schemes</a>
+                <a href="#/camps">Health Camps</a>
+                <a href="#/find-help">Find Help</a>
+                <a href="#/about">About</a>
+              </div>
+            </div>
+
+            <div>
+              <div className="footer-title">Important</div>
+              <p>
+                SchemeWise never submits applications on your behalf and does not
+                request Aadhaar numbers, bank details or medical records.
+              </p>
+              <a href="#developer" className="text-link">
+                About the Developer →
+              </a>
+            </div>
+          </div>
+
+          <div className="container footer-bottom">
+            <span>
+              © 2026 SchemeWise. Informational prototype.
+            </span>
+            <span>
+              Developed by <strong>Developer Name / Team</strong>
+            </span>
+          </div>
+        </footer>
+      );
+    }
+
+    /* ============================================================
+       HOME
+       ============================================================ */
+
+    function Home() {
+      const features = [
+        {
+          icon: "check",
+          title: "Check Eligibility",
+          text: "Answer a few simple questions to find schemes that may match your situation.",
+          link: "/eligibility"
+        },
+        {
+          icon: "document",
+          title: "Browse Schemes",
+          text: "Explore health schemes by state, benefit type and target group.",
+          link: "/schemes"
+        },
+        {
+          icon: "calendar",
+          title: "Find Health Camps",
+          text: "Browse sample upcoming and completed health camps by district and service.",
+          link: "/camps"
+        },
+        {
+          icon: "heart",
+          title: "Find Help",
+          text: "Choose the kind of help you need and get focused guidance.",
+          link: "/find-help"
+        }
+      ];
+
+      return (
+        <>
+          <main className="page">
+            <section className="hero">
+              <div className="container hero-grid">
+                <div>
+                  <div className="eyebrow">Civic health guidance</div>
+
+                  <h1>
+                    Understand health schemes.
+                    <br />
+                    <span>Find the help you need.</span>
+                  </h1>
+
+                  <p className="hero-text">
+                    SchemeWise helps people in India discover government health
+                    schemes, check rough eligibility and explore health camps —
+                    without collecting sensitive personal information.
+                  </p>
+
+                  <div className="hero-actions">
+                    <a className="primary-btn" href="#/eligibility">
+                      Check My Eligibility <Icon name="arrow" size={17}/>
+                    </a>
+
+                    <a className="secondary-btn" href="#/schemes">
+                      Browse Schemes
+                    </a>
+
+                    <a className="outline-btn" href="#/camps">
+                      Find Health Camps
+                    </a>
+                  </div>
+                </div>
+
+                <div className="hero-panel">
+                  <div className="hero-panel-head">
+                    <div className="icon-box">
+                      <Icon name="shield" size={24}/>
+                    </div>
+                    <div>
+                      <h3>Designed with privacy in mind</h3>
+                      <span className="muted" style={{fontSize: ".82rem"}}>
+                        No account required
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="mini-list">
+                    <div className="mini-list-item">
+                      <span className="mini-check"><Icon name="check" size={17}/></span>
+                      <span>Uses basic eligibility information such as age, state and occupation.</span>
+                    </div>
+
+                    <div className="mini-list-item">
+                      <span className="mini-check"><Icon name="check" size={17}/></span>
+                      <span>Does not ask for Aadhaar numbers, bank details or medical records.</span>
+                    </div>
+
+                    <div className="mini-list-item">
+                      <span className="mini-check"><Icon name="check" size={17}/></span>
+                      <span>All application actions point to external official sources.</span>
+                    </div>
+
+                    <div className="mini-list-item">
+                      <span className="mini-check"><Icon name="check" size={17}/></span>
+                      <span>Eligibility results are only an initial guidance check.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="section">
+              <div className="container">
+                <div className="eyebrow">Simple process</div>
+                <h2 className="section-title">How SchemeWise Helps</h2>
+                <p className="section-subtitle">
+                  No complicated forms. Start with the information you already know.
+                </p>
+
+                <div className="grid steps-grid">
+                  {[
+                    ["01", "Tell us the basics", "Select your age, state, income range and occupation."],
+                    ["02", "Get a rough match", "Our local dataset checks the information against scheme rules."],
+                    ["03", "Understand the scheme", "Read benefits, eligibility, documents and application guidance."],
+                    ["04", "Verify officially", "Use the official government source before taking action."]
+                  ].map(([number, title, text]) => (
+                    <div className="card step-card" key={number}>
+                      <div className="step-number">{number}</div>
+                      <h3>{title}</h3>
+                      <p>{text}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="section" style={{background: "#fff"}}>
+              <div className="container">
+                <div className="eyebrow">Explore</div>
+                <h2 className="section-title">What You Can Do Here</h2>
+
+                <div className="grid feature-grid">
+                  {features.map((feature) => (
+                    <a href={"#" + feature.link} className="card feature-card" key={feature.title}>
+                      <div className="icon-box">
+                        <Icon name={feature.icon} size={22}/>
+                      </div>
+                      <h3>{feature.title}</h3>
+                      <p>{feature.text}</p>
+                      <span className="text-link">Explore →</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            <section className="section">
+              <div className="container">
+                <div className="closing-cta">
+                  <div>
+                    <h2>Not sure where to start?</h2>
+                    <p>
+                      Answer four simple questions and SchemeWise will show schemes
+                      that may be relevant to you.
+                    </p>
+                    <p className="privacy-note">
+                      Your answers stay in this browser session. SchemeWise never
+                      asks for Aadhaar numbers, bank details or medical records.
+                    </p>
+                  </div>
+
+                  <a className="primary-btn" href="#/eligibility">
+                    Start Eligibility Check <Icon name="arrow" size={17}/>
+                  </a>
+                </div>
+              </div>
+            </section>
+          </main>
+
+          <Footer/>
+        </>
+      );
+    }
+
+    /* ============================================================
+       ELIGIBILITY CHECKER
+       ============================================================ */
+
+    function Eligibility() {
+      const [step, setStep] = useState(1);
+      const [form, setForm] = useState({
+        age: "",
+        state: "",
+        income: "",
+        occupation: ""
+      });
+      const [submitted, setSubmitted] = useState(false);
+
+      const update = (key, value) => {
+        setForm(prev => ({ ...prev, [key]: value }));
+      };
+
+      const canContinue = () => {
+        if (step === 1) return Number(form.age) >= 0 && Number(form.age) <= 120;
+        if (step === 2) return !!form.state;
+        if (step === 3) return !!form.income;
+        if (step === 4) return !!form.occupation;
+        return false;
+      };
+
+      const matches = useMemo(() => {
+        if (!submitted) return [];
+
+        const age = Number(form.age);
+        const income = Number(form.income);
+
+        return schemes.filter(scheme => {
+          const e = scheme.eligibility;
+
+          const ageMatch = age >= e.minAge && age <= e.maxAge;
+          const incomeMatch = income <= e.incomeCeiling;
+          const occupationMatch =
+            e.occupations.includes(form.occupation);
+
+          const stateMatch =
+            e.states.includes("ALL") ||
+            e.states.some(
+              state => state.toLowerCase() === form.state.toLowerCase()
+            );
+
+          return ageMatch && incomeMatch && occupationMatch && stateMatch;
+        });
+      }, [submitted, form]);
+
+      const whyReasons = (scheme) => {
+        const e = scheme.eligibility;
+        const reasons = [];
+
+        reasons.push(`Your age (${form.age}) falls within the listed age range.`);
+        reasons.push(`Your selected state is covered by the scheme.`);
+
+        if (e.incomeCeiling !== Infinity) {
+          reasons.push("Your selected income range is within the scheme's sample income ceiling.");
+        } else {
+          reasons.push("No sample income ceiling is used for this scheme.");
+        }
+
+        reasons.push(
+          `Your occupation (${form.occupation}) is included in the sample eligible groups.`
+        );
+
+        return reasons;
+      };
+
+      if (submitted) {
+        return (
+          <main className="page">
+            <div className="page-header">
+              <div className="container">
+                <div className="eyebrow">Eligibility results</div>
+                <h1 className="section-title">Schemes that may match you</h1>
+                <p className="section-subtitle">
+                  These are rough matches against the SchemeWise sample dataset,
+                  not an official eligibility decision.
+                </p>
+              </div>
+            </div>
+
+            <section className="section-sm">
+              <div className="container">
+                <Disclaimer/>
+
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "15px",
+                  margin: "28px 0 18px",
+                  flexWrap: "wrap"
+                }}>
+                  <div>
+                    <strong>{matches.length} possible match{matches.length !== 1 ? "es" : ""}</strong>
+                    <div className="muted" style={{fontSize: ".85rem"}}>
+                      Based on the answers entered in this session.
+                    </div>
+                  </div>
+
+                  <button
+                    className="outline-btn"
+                    onClick={() => {
+                      setSubmitted(false);
+                      setStep(1);
+                    }}
+                  >
+                    Change Answers
+                  </button>
+                </div>
+
+                {matches.length > 0 ? (
+                  <div className="grid scheme-grid">
+                    {matches.map(scheme => (
+                      <div className="card scheme-card" key={scheme.id}>
+                        <div className="scheme-card-top">
+                          <div>
+                            <span className="tag primary">
+                              {scheme.benefitType}
+                            </span>
+                            <h3>{scheme.name}</h3>
+                          </div>
+                        </div>
+
+                        <p className="scheme-summary">{scheme.summary}</p>
+
+                        <div>
+                          <strong style={{fontSize: ".82rem"}}>
+                            Why you may qualify
+                          </strong>
+
+                          <ul
+                            className="detail-list"
+                            style={{fontSize: ".81rem", marginBottom: 0}}
+                          >
+                            {whyReasons(scheme).slice(0, 3).map(reason => (
+                              <li key={reason}>{reason}</li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        <div className="scheme-card-footer">
+                          <span className="scheme-meta">{scheme.state}</span>
+                          <a
+                            className="text-link"
+                            href={"#/schemes/" + scheme.id}
+                          >
+                            View details →
+                          </a>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="empty" style={{marginTop: 25}}>
+                    <div className="icon-box" style={{margin: "0 auto"}}>
+                      <Icon name="search" size={22}/>
+                    </div>
+
+                    <h3>No direct matches found</h3>
+
+                    <p>
+                      This does not mean you are ineligible for government
+                      assistance. The checker uses a limited sample dataset and
+                      simplified rules.
+                    </p>
+
+                    <div style={{
+                      display: "flex",
+                      gap: "10px",
+                      justifyContent: "center",
+                      flexWrap: "wrap"
+                    }}>
+                      <a className="primary-btn" href="#/schemes">
+                        Browse Scheme Directory
+                      </a>
+                      <a className="outline-btn" href="#/find-help">
+                        Find Help
+                      </a>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </section>
+
+            <Footer/>
+          </main>
+        );
+      }
+
+      const titles = [
+        ["Your age", "Age helps us identify schemes with age-related eligibility conditions."],
+        ["Your state / UT", "Some programmes are nationwide while others can have state-specific rules."],
+        ["Income range", "Choose the closest annual household income range. Do not enter exact financial details."],
+        ["Occupation", "Select the category that best describes your current occupation."]
+      ];
+
+      return (
+        <main className="page">
+          <div className="page-header">
+            <div className="container">
+              <div className="eyebrow">4-step checker</div>
+              <h1 className="section-title">Check Your Rough Eligibility</h1>
+              <p className="section-subtitle">
+                No Aadhaar number, bank details or medical records are required.
+              </p>
+            </div>
+          </div>
+
+          <section className="section">
+            <div className="container checker-shell">
+              <div className="progress-label">
+                <span>Step {step} of 4</span>
+                <span>{Math.round(step / 4 * 100)}%</span>
+              </div>
+
+              <div className="progress">
+                <div
+                  className="progress-bar"
+                  style={{width: `${step / 4 * 100}%`}}
+                />
+              </div>
+
+              <div className="card form-card">
+                <h2>{titles[step - 1][0]}</h2>
+                <p>{titles[step - 1][1]}</p>
+
+                {step === 1 && (
+                  <div className="form-grid">
+                    <div className="field full">
+                      <label htmlFor="age">Age</label>
+                      <input
+                        id="age"
+                        type="number"
+                        min="0"
+                        max="120"
+                        placeholder="Enter your age"
+                        value={form.age}
+                        onChange={e => update("age", e.target.value)}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {step === 2 && (
+                  <div className="form-grid">
+                    <div className="field full">
+                      <label htmlFor="state">State / Union Territory</label>
+                      <select
+                        id="state"
+                        value={form.state}
+                        onChange={e => update("state", e.target.value)}
+                      >
+                        <option value="">Select your state / UT</option>
+                        {states.map(state => (
+                          <option value={state} key={state}>{state}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                )}
+
+                {step === 3 && (
+                  <div className="choice-grid">
+                    {incomeOptions.map(option => (
+                      <div
+                        key={option.value}
+                        className={"choice " + (form.income === String(option.value) ? "selected" : "")}
+                        onClick={() => update("income", String(option.value))}
+                      >
+                        <strong>{option.label}</strong>
+                        <span>Approximate annual income range</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {step === 4 && (
+                  <div className="choice-grid">
+                    {occupations.map(occupation => (
+                      <div
+                        key={occupation}
+                        className={"choice " + (form.occupation === occupation ? "selected" : "")}
+                        onClick={() => update("occupation", occupation)}
+                      >
+                        <strong style={{textTransform: "capitalize"}}>
+                          {occupation}
+                        </strong>
+                        <span>Select the closest category</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div className="form-actions">
+                  {step > 1 ? (
+                    <button
+                      className="outline-btn"
+                      onClick={() => setStep(step - 1)}
+                    >
+                      ← Back
+                    </button>
+                  ) : (
+                    <span></span>
+                  )}
+
+                  {step < 4 ? (
+                    <button
+                      className="primary-btn"
+                      disabled={!canContinue()}
+                      onClick={() => canContinue() && setStep(step + 1)}
+                      style={!canContinue() ? {opacity: .5, cursor: "not-allowed"} : {}}
+                    >
+                      Continue <Icon name="arrow" size={16}/>
+                    </button>
+                  ) : (
+                    <button
+                      className="primary-btn"
+                      disabled={!canContinue()}
+                      onClick={() => canContinue() && setSubmitted(true)}
+                      style={!canContinue() ? {opacity: .5, cursor: "not-allowed"} : {}}
+                    >
+                      See Possible Matches
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div style={{marginTop: 20}}>
+                <Disclaimer/>
+              </div>
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       SCHEME DIRECTORY
+       ============================================================ */
+
+    function Schemes() {
+      const [search, setSearch] = useState("");
+      const [stateFilter, setStateFilter] = useState("");
+      const [benefitFilter, setBenefitFilter] = useState("");
+      const [targetFilter, setTargetFilter] = useState("");
+
+      const filtered = useMemo(() => {
+        const query = search.toLowerCase().trim();
+
+        return schemes.filter(scheme => {
+          const searchable = [
+            scheme.name,
+            scheme.summary,
+            scheme.description,
+            scheme.benefitType,
+            ...scheme.targetGroup
+          ].join(" ").toLowerCase();
+
+          const searchMatch = !query || searchable.includes(query);
+
+          const stateMatch =
+            !stateFilter ||
+            scheme.state === "All India" ||
+            scheme.eligibility.states.includes(stateFilter);
+
+          const benefitMatch =
+            !benefitFilter || scheme.benefitType === benefitFilter;
+
+          const targetMatch =
+            !targetFilter || scheme.targetGroup.includes(targetFilter);
+
+          return searchMatch && stateMatch && benefitMatch && targetMatch;
+        });
+      }, [search, stateFilter, benefitFilter, targetFilter]);
+
+      return (
+        <main className="page">
+          <div className="page-header">
+            <div className="container">
+              <div className="eyebrow">Scheme directory</div>
+              <h1 className="section-title">Health Schemes</h1>
+              <p className="section-subtitle">
+                Explore sample government health schemes and read the key details
+                before visiting the official source.
+              </p>
+            </div>
+          </div>
+
+          <section className="section-sm">
+            <div className="container">
+              <div className="filters">
+                <div style={{position: "relative"}}>
+                  <Icon
+                    name="search"
+                    size={18}
+                  />
+                  <input
+                    style={{paddingLeft: 40}}
+                    placeholder="Search schemes..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                  />
+                </div>
+
+                <select
+                  value={stateFilter}
+                  onChange={e => setStateFilter(e.target.value)}
+                >
+                  <option value="">All states / UTs</option>
+                  {states.map(state => (
+                    <option key={state} value={state}>{state}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={benefitFilter}
+                  onChange={e => setBenefitFilter(e.target.value)}
+                >
+                  <option value="">All benefit types</option>
+                  {benefitTypes.map(type => (
+                    <option key={type}>{type}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={targetFilter}
+                  onChange={e => setTargetFilter(e.target.value)}
+                >
+                  <option value="">All target groups</option>
+                  {targetGroups.map(group => (
+                    <option key={group}>{group}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="results-count">
+                Showing <strong>{filtered.length}</strong> of {schemes.length} schemes
+              </div>
+
+              {filtered.length > 0 ? (
+                <div className="grid scheme-grid">
+                  {filtered.map(scheme => (
+                    <div className="card scheme-card" key={scheme.id}>
+                      <div className="scheme-card-top">
+                        <div>
+                          <span className="tag primary">
+                            {scheme.benefitType}
+                          </span>
+                          <h3>{scheme.name}</h3>
+                        </div>
+                      </div>
+
+                      <p className="scheme-summary">{scheme.summary}</p>
+
+                      <div>
+                        {scheme.targetGroup.slice(0, 3).map(group => (
+                          <span className="tag" key={group}>{group}</span>
+                        ))}
+                      </div>
+
+                      <div className="scheme-card-footer">
+                        <span className="scheme-meta">{scheme.state}</span>
+                        <a
+                          className="text-link"
+                          href={"#/schemes/" + scheme.id}
+                        >
+                          View scheme →
+                        </a>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="empty">
+                  <div className="icon-box" style={{margin: "0 auto"}}>
+                    <Icon name="search" size={22}/>
+                  </div>
+                  <h3>No schemes found</h3>
+                  <p>
+                    Try changing your search term or removing one of the filters.
+                  </p>
+                  <button
+                    className="outline-btn"
+                    onClick={() => {
+                      setSearch("");
+                      setStateFilter("");
+                      setBenefitFilter("");
+                      setTargetFilter("");
+                    }}
+                  >
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <section className="section-sm">
+            <div className="container">
+              <Disclaimer/>
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       SCHEME DETAIL
+       ============================================================ */
+
+    function SchemeDetail({ id }) {
+      const scheme = schemes.find(s => s.id === id);
+
+      if (!scheme) {
+        return (
+          <main className="page">
+            <section className="section">
+              <div className="container">
+                <div className="empty">
+                  <h3>Scheme not found</h3>
+                  <p>
+                    The scheme you requested is not present in the local dataset.
+                  </p>
+                  <a className="primary-btn" href="#/schemes">
+                    Back to Directory
+                  </a>
+                </div>
+              </div>
+            </section>
+            <Footer/>
+          </main>
+        );
+      }
+
+      return (
+        <main className="page">
+          <section className="section">
+            <div className="container">
+              <a className="back-link" href="#/schemes">
+                ← Back to Health Schemes
+              </a>
+
+              <div className="detail-grid">
+                <article className="card detail-main">
+                  <span className="tag primary">{scheme.benefitType}</span>
+
+                  <h1>{scheme.name}</h1>
+
+                  <p style={{
+                    fontSize: "1.05rem",
+                    color: "#52676d"
+                  }}>
+                    {scheme.description}
+                  </p>
+
+                  <h2>Eligibility</h2>
+
+                  <ul className="detail-list">
+                    <li>
+                      Age: {scheme.eligibility.minAge}–{scheme.eligibility.maxAge} years
+                    </li>
+
+                    <li>
+                      Income ceiling used by this demo:
+                      {" "}
+                      {scheme.eligibility.incomeCeiling === Infinity
+                        ? "No sample income ceiling"
+                        : "up to ₹" + scheme.eligibility.incomeCeiling.toLocaleString("en-IN")}
+                    </li>
+
+                    <li>
+                      Occupations: {scheme.eligibility.occupations.join(", ")}
+                    </li>
+
+                    <li>
+                      Coverage:
+                      {" "}
+                      {scheme.eligibility.states.includes("ALL")
+                        ? "All India"
+                        : scheme.eligibility.states.join(", ")}
+                    </li>
+                  </ul>
+
+                  <h2>Benefits</h2>
+
+                  <ul className="detail-list">
+                    {scheme.benefits.map(item => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+
+                  <h2>Required Documents</h2>
+
+                  <ul className="detail-list">
+                    {scheme.documentsRequired.map(item => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+
+                  <h2>How to Apply</h2>
+
+                  <ol className="detail-list">
+                    {scheme.howToApply.map(item => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ol>
+
+                  <Disclaimer/>
+                </article>
+
+                <aside className="card detail-side">
+                  <div className="side-block">
+                    <div className="side-label">State / Coverage</div>
+                    <div className="side-value">{scheme.state}</div>
+                  </div>
+
+                  <div className="side-block">
+                    <div className="side-label">Benefit Type</div>
+                    <div className="side-value">{scheme.benefitType}</div>
+                  </div>
+
+                  <div className="side-block">
+                    <div className="side-label">Target Groups</div>
+                    <div style={{marginTop: 6}}>
+                      {scheme.targetGroup.map(group => (
+                        <span className="tag" key={group}>{group}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="side-block">
+                    <a
+                      className="primary-btn"
+                      href={scheme.officialUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{width: "100%"}}
+                    >
+                      Official Source
+                      <Icon name="external" size={16}/>
+                    </a>
+                  </div>
+
+                  <p
+                    className="muted"
+                    style={{
+                      fontSize: ".78rem",
+                      marginBottom: 0
+                    }}
+                  >
+                    SchemeWise does not submit applications. The button above
+                    opens the external official source.
+                  </p>
+                </aside>
+              </div>
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       HEALTH CAMPS
+       ============================================================ */
+
+    function Camps() {
+      const [district, setDistrict] = useState("");
+      const [service, setService] = useState("");
+
+      const districts = [...new Set(camps.map(c => c.district))].sort();
+      const services = [...new Set(camps.map(c => c.serviceType))].sort();
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const getStatus = (date) => {
+        const d = new Date(date + "T00:00:00");
+        return d >= today ? "Upcoming" : "Completed";
+      };
+
+      const filtered = camps
+        .filter(camp =>
+          (!district || camp.district === district) &&
+          (!service || camp.serviceType === service)
+        )
+        .sort((a, b) => {
+          const aUpcoming = getStatus(a.date) === "Upcoming";
+          const bUpcoming = getStatus(b.date) === "Upcoming";
+
+          if (aUpcoming && !bUpcoming) return -1;
+          if (!aUpcoming && bUpcoming) return 1;
+
+          if (aUpcoming && bUpcoming) {
+            return new Date(a.date) - new Date(b.date);
+          }
+
+          return new Date(b.date) - new Date(a.date);
+        });
+
+      return (
+        <main className="page">
+          <div className="page-header">
+            <div className="container">
+              <div className="eyebrow">Health camps</div>
+              <h1 className="section-title">Find Health Camps</h1>
+              <p className="section-subtitle">
+                Browse the embedded sample camp directory and filter by district
+                or service type.
+              </p>
+            </div>
+          </div>
+
+          <section className="section-sm">
+            <div className="container">
+              <div className="camp-filters">
+                <select
+                  value={district}
+                  onChange={e => setDistrict(e.target.value)}
+                >
+                  <option value="">All districts</option>
+                  {districts.map(item => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+
+                <select
+                  value={service}
+                  onChange={e => setService(e.target.value)}
+                >
+                  <option value="">All service types</option>
+                  {services.map(item => (
+                    <option key={item}>{item}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="results-count">
+                {filtered.length} camp{filtered.length !== 1 ? "s" : ""} shown
+              </div>
+
+              {filtered.length > 0 ? (
+                <div className="grid camp-grid">
+                  {filtered.map(camp => {
+                    const status = getStatus(camp.date);
+
+                    return (
+                      <div className="card camp-card" key={camp.id}>
+                        <div className="camp-card-top">
+                          <span className="tag primary">
+                            {camp.serviceType}
+                          </span>
+
+                          <span className={"status " + (
+                            status === "Upcoming"
+                              ? "upcoming"
+                              : "completed"
+                          )}>
+                            {status}
+                          </span>
+                        </div>
+
+                        <h3>{camp.name}</h3>
+
+                        <div className="camp-organizer">
+                          {camp.organizer}
+                        </div>
+
+                        <div className="camp-info">
+                          <div className="camp-info-row">
+                            <Icon name="calendar" size={17}/>
+                            <span>
+                              {new Date(camp.date + "T00:00:00").toLocaleDateString(
+                                "en-IN",
+                                {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric"
+                                }
+                              )}
+                            </span>
+                          </div>
+
+                          <div className="camp-info-row">
+                            <Icon name="location" size={17}/>
+                            <span>{camp.venue}</span>
+                          </div>
+
+                          <div className="camp-info-row">
+                            <Icon name="location" size={17}/>
+                            <span>{camp.district} district</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="empty">
+                  <h3>No camps found</h3>
+                  <p>
+                    Try removing one of the filters.
+                  </p>
+                </div>
+              )}
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       FIND HELP
+       ============================================================ */
+
+    function FindHelp() {
+      const [selected, setSelected] = useState("financial");
+
+      const categories = {
+        financial: {
+          title: "Financial Help",
+          icon: "money",
+          text: "For people looking for government health support that can reduce the cost of eligible healthcare or provide financial assistance.",
+          schemes: ["pmjay", "jsy", "pmmvy", "jssk"],
+          campTypes: ["General Health", "Maternal & Child Health"]
+        },
+        insurance: {
+          title: "Insurance",
+          icon: "insurance",
+          text: "For people exploring government-supported insurance or accident protection programmes.",
+          schemes: ["pmjay", "pmsby"],
+          campTypes: ["General Health", "Screening"]
+        },
+        screening: {
+          title: "Screening / Checkups",
+          icon: "scan",
+          text: "For people looking for preventive screening, child health checks, senior care or community health services.",
+          schemes: ["rbsk", "nphce", "sickle", "healthwellness", "nhm"],
+          campTypes: ["Screening", "Child Health", "Senior Citizen Health", "Eye Care"]
+        }
+      };
+
+      const current = categories[selected];
+
+      const selectedSchemes = current.schemes
+        .map(id => schemes.find(s => s.id === id))
+        .filter(Boolean);
+
+      const selectedCamps = camps.filter(c =>
+        current.campTypes.includes(c.serviceType)
+      );
+
+      return (
+        <main className="page">
+          <div className="page-header">
+            <div className="container">
+              <div className="eyebrow">Guided discovery</div>
+              <h1 className="section-title">Find Help</h1>
+              <p className="section-subtitle">
+                Start with the type of help you are looking for. SchemeWise will
+                narrow the sample directory for you.
+              </p>
+            </div>
+          </div>
+
+          <section className="section">
+            <div className="container">
+              <div className="grid help-options">
+                {Object.entries(categories).map(([key, category]) => (
+                  <div
+                    className={"card help-option " + (selected === key ? "selected" : "")}
+                    key={key}
+                    onClick={() => setSelected(key)}
+                  >
+                    <div className="icon-box">
+                      <Icon name={category.icon} size={23}/>
+                    </div>
+
+                    <h3>{category.title}</h3>
+                    <p>{category.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="help-guidance">
+                <strong>{current.title}</strong>
+                <span>{current.text}</span>
+              </div>
+
+              <h2 style={{fontSize: "1.35rem"}}>
+                Relevant schemes
+              </h2>
+
+              <div className="grid scheme-grid" style={{marginTop: 18}}>
+                {selectedSchemes.map(scheme => (
+                  <div className="card scheme-card" key={scheme.id}>
+                    <span className="tag primary">{scheme.benefitType}</span>
+                    <h3 style={{marginTop: 8}}>{scheme.name}</h3>
+                    <p className="scheme-summary">{scheme.summary}</p>
+
+                    <div className="scheme-card-footer">
+                      <span className="scheme-meta">{scheme.state}</span>
+                      <a className="text-link" href={"#/schemes/" + scheme.id}>
+                        View details →
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <h2 style={{fontSize: "1.35rem", marginTop: 45}}>
+                Related camps
+              </h2>
+
+              <div className="grid camp-grid" style={{marginTop: 18}}>
+                {selectedCamps.slice(0, 6).map(camp => (
+                  <div className="card camp-card" key={camp.id}>
+                    <span className="tag primary">{camp.serviceType}</span>
+                    <h3>{camp.name}</h3>
+
+                    <div className="camp-info">
+                      <div className="camp-info-row">
+                        <Icon name="calendar" size={17}/>
+                        <span>
+                          {new Date(camp.date + "T00:00:00").toLocaleDateString(
+                            "en-IN",
+                            {day: "numeric", month: "short", year: "numeric"}
+                          )}
+                        </span>
+                      </div>
+
+                      <div className="camp-info-row">
+                        <Icon name="location" size={17}/>
+                        <span>{camp.venue}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div style={{marginTop: 35}}>
+                <Disclaimer/>
+              </div>
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       ABOUT
+       ============================================================ */
+
+    function About() {
+      return (
+        <main className="page">
+          <div className="page-header">
+            <div className="container">
+              <div className="eyebrow">About SchemeWise</div>
+              <h1 className="section-title">Making public health information easier to navigate.</h1>
+              <p className="section-subtitle">
+                SchemeWise is a civic-tech prototype focused on health scheme
+                discovery and basic eligibility guidance.
+              </p>
+            </div>
+          </div>
+
+          <section className="section">
+            <div className="container about-grid">
+              <div className="card about-card">
+                <h2>Our Mission</h2>
+
+                <p>
+                  Government health programmes can be difficult to discover because
+                  information is distributed across departments, portals and
+                  programme pages.
+                </p>
+
+                <p>
+                  SchemeWise brings a simplified discovery layer together in one
+                  place. Users can explore schemes, perform a basic eligibility
+                  check, browse sample health camps and find focused guidance.
+                </p>
+
+                <p>
+                  The application is deliberately designed as an information and
+                  guidance tool. It does not replace government verification,
+                  professional healthcare advice or the official application
+                  process.
+                </p>
+
+                <h2>Privacy by Design</h2>
+
+                <ul className="detail-list">
+                  <li>No login or account is required.</li>
+                  <li>No Aadhaar numbers are requested.</li>
+                  <li>No bank account details are requested.</li>
+                  <li>No medical records are requested.</li>
+                  <li>The eligibility checker operates against a local sample dataset.</li>
+                  <li>Applications are never submitted by SchemeWise.</li>
+                </ul>
+              </div>
+
+              <div>
+                <div className="card about-card" id="developer">
+                  <h2>About the Developer</h2>
+
+                  <div className="developer-box">
+                    <strong>Developer Name / Team</strong>
+                    <p className="muted" style={{marginBottom: 0}}>
+                      Developer bio placeholder. Add your name, college,
+                      course, project role and a short description of your
+                      interest in civic technology here.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="card about-card" style={{marginTop: 22}}>
+                  <h2>Technology</h2>
+
+                  <div>
+                    <span className="tag">HTML</span>
+                    <span className="tag">CSS</span>
+                    <span className="tag">JavaScript</span>
+                    <span className="tag">React</span>
+                    <span className="tag">ReactDOM</span>
+                    <span className="tag">Babel</span>
+                  </div>
+
+                  <p className="muted">
+                    This prototype is intentionally self-contained and runs
+                    entirely in the browser.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="section-sm">
+            <div className="container">
+              <h2 style={{fontSize: "1.4rem"}}>Full Disclaimer</h2>
+              <Disclaimer/>
+            </div>
+          </section>
+
+          <Footer/>
+        </main>
+      );
+    }
+
+    /* ============================================================
+       APP
+       ============================================================ */
+
+    function App() {
+      const [route, setRoute] = useState(getRoute());
+
+      useEffect(() => {
+        const handleHashChange = () => {
+          setRoute(getRoute());
+          window.scrollTo(0, 0);
+        };
+
+        window.addEventListener("hashchange", handleHashChange);
+
+        if (!window.location.hash) {
+          window.location.hash = "#/";
+        }
+
+        return () => {
+          window.removeEventListener("hashchange", handleHashChange);
+        };
+      }, []);
+
+      let page;
+
+      switch (route.page) {
+        case "eligibility":
+          page = <Eligibility/>;
+          break;
+
+        case "schemes":
+          page = <Schemes/>;
+          break;
+
+        case "scheme-detail":
+          page = <SchemeDetail id={route.id}/>;
+          break;
+
+        case "camps":
+          page = <Camps/>;
+          break;
+
+        case "find-help":
+          page = <FindHelp/>;
+          break;
+
+        case "about":
+          page = <About/>;
+          break;
+
+        case "home":
+        default:
+          page = <Home/>;
+      }
+
+      return page;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+  </script>
+</body>
+</html>
