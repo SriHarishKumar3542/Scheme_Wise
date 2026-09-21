@@ -39,7 +39,7 @@ The problem is **information discovery, understanding and navigation**.
 
 ---
 
-# 💡 Our Solution
+# 💡 OUR SOLUTION
 
 SchemeWise converts a user's basic situation into a structured support-discovery workflow.
 
