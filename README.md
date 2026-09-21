@@ -6,7 +6,7 @@ SchemeWise is a health-focused civic-tech web application designed to make gover
 
 Instead of requiring users to already know the name of a government scheme, SchemeWise starts with the user's **need and situation** and guides them toward potentially relevant health schemes.
 
-> ⚠️ **Disclaimer:** SchemeWise provides information and eligibility guidance only. Final eligibility and approval are determined by the respective scheme authority. Always verify current details on official government websites before applying.
+> ⚠️ **DISCLAIMER:** SchemeWise provides information and eligibility guidance only. Final eligibility and approval are determined by the respective scheme authority. Always verify current details on official government websites before applying.
 
 ---
 
