@@ -20,7 +20,7 @@ https://sriharishkumar3542.github.io/Scheme_Wise/#
 
 ---
 
-# 🎯 Problem Statement
+# 🎯 PROLEM STATEMENT
 
 Government health schemes provide important support, but users may face difficulties such as:
 
