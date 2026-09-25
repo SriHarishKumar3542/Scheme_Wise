@@ -10,7 +10,7 @@ Instead of requiring users to already know the name of a government scheme, Sche
 
 ---
 
-## 🌐 Live Demo
+## 🌐 LIVE DEMO
 
 🔗 **Live Website:**  
 https://sriharishkumar3542.github.io/Scheme_Wise/#
